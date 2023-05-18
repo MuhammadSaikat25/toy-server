@@ -33,14 +33,26 @@ async function run() {
       const result=await createToy.insertOne(body)
       res.send(result)
     })
-
+    // get data by age
     app.get('/getToy/:age',async(req,res)=>{
       const data=req.params.age
       const age={age:data}
       const result=await createToy.find(age).toArray()
       res.send(result)
      
-        
+    })
+    // get data by email
+    app.get('/myToy',async(req,res)=>{
+      let query={}
+      if(req.query?.email){
+        query={email:req.query.email}
+      }
+      const result=await createToy.find(query).toArray()
+      res.send(result)
+    })
+    app.get('/allToy',async(req,res)=>{
+      const result=await createToy.find().toArray()
+      res.send(result)
     })
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
