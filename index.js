@@ -46,7 +46,6 @@ async function run() {
     // get data by id
     app.get('/getById/:id', async (req, res) => {
       const id = req.params.id
-
       const data = { _id: new ObjectId(id) }
       const result = await createToy.findOne(data)
       res.send(result)
@@ -73,6 +72,25 @@ async function run() {
       const id = req.params.id
       const data = { _id: new ObjectId(id) }
       const result = await createToy.deleteOne(data)
+      res.send(result)
+    })
+
+    // update data
+    app.put('/update/:id', async (req, res) => {
+      const data = req.body
+      const id = req.params.id
+      const filter = { _id: new ObjectId(id) }
+      const options = { upsert: true };
+      const update = {
+        $set: {
+          price: data.price,
+          
+          quantity: data.quantity,
+          details: data.detail
+
+        }
+      }
+      const result = await createToy.updateOne(filter, update, options)
       res.send(result)
     })
     await client.db("admin").command({ ping: 1 });
