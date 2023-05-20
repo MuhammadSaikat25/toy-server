@@ -63,7 +63,7 @@ async function run() {
 
     // get all toy
     app.get('/allToy', async (req, res) => {
-      const result = await createToy.find().toArray()
+      const result = await createToy.find().limit(20).toArray()
       res.send(result)
     })
 
