@@ -51,6 +51,19 @@ async function run() {
       res.send(result)
     })
 
+    // get toy using low-high price
+    app.get('/getSort/:price',async(req,res)=>{
+        const price=req.params.price
+        if(price=='2'){
+          const result=await createToy.find().sort({'price':-1}).toArray()
+          res.send(result)
+        }
+        if(price=='1'){
+          const result=await createToy.find().sort({'price':1}).toArray()
+          res.send(result)
+        }
+        
+    })
     // get data by email
     app.get('/myToy', async (req, res) => {
       let query = {}
@@ -84,10 +97,8 @@ async function run() {
       const update = {
         $set: {
           price: data.price,
-          
           quantity: data.quantity,
           details: data.detail
-
         }
       }
       const result = await createToy.updateOne(filter, update, options)
